@@ -13,9 +13,9 @@ class Program
         App = new Application("LBH.SerialPortTools", GLib.ApplicationFlags.None);
         App.Register(GLib.Cancellable.Current);
 
-        Gtk.CssProvider provider = new Gtk.CssProvider();
+        CssProvider provider = new CssProvider();
         provider.LoadFromPath("sp.css");
-        Gtk.StyleContext.AddProviderForScreen(Gdk.Screen.Default, provider, 800);
+        StyleContext.AddProviderForScreen(Gdk.Screen.Default, provider, 800);
 
         mainWindow = new MainWindow();
         mainWindow.SetIconFromFile("logo.png");

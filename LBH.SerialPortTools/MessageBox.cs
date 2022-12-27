@@ -27,7 +27,7 @@ namespace LBH.SerialPortTools
 		/// <param name='_Type'>
 		/// The Type of the MessageDialog.
 		/// </param>
-		public static ResponseType Show(string text, string caption, ButtonsType _Buttons = ButtonsType.Ok, MessageType _Type = MessageType.Info, Gtk.Window parent = null)
+		public static ResponseType Show(string text, string caption, ButtonsType _Buttons = ButtonsType.Ok, MessageType _Type = MessageType.Info, Window parent = null!)
 		{
 			if (text.Contains("not set"))
 			{			

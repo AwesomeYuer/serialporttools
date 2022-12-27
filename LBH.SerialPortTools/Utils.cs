@@ -74,10 +74,11 @@ namespace LBH.SerialPortTools
                 }
                 return bytes;
             }
-            catch (Exception e3)
+            catch
+                // (Exception e3)
             {
                 //MessageBox.Show("16进制的格式不对，请重试");
-                return null;
+                return null!;
             }
         }
 

@@ -22,7 +22,7 @@ namespace LBH.SerialPortTools
         };
         public MainWindow():base(WindowType.Toplevel)
         {
-            this.Build();
+            Build();
             InitHistoryConfig();
         }
 
@@ -82,18 +82,18 @@ namespace LBH.SerialPortTools
         private uint timerSendId = 0;
 
         private Gdk.Pixbuf img;
-        private Gtk.Image imgRender;
+        private Image imgRender;
         #endregion
 
         #region 界面布局
         private void Build()
         {
-            this.WindowPosition = WindowPosition.Center;
-            this.SetDefaultSize(600, 600);
-            this.Title = "串口调试助手v1.0.00";
-            this.Resizable = false;
-            this.DeleteEvent += MainWindow_DeleteEvent;
-            this.Add(layout);
+            WindowPosition = WindowPosition.Center;
+            SetDefaultSize(600, 600);
+            Title = "串口调试助手v1.0.00";
+            Resizable = false;
+            DeleteEvent += MainWindow_DeleteEvent;
+            Add(layout);
 
             //统计数据
             statusbar = new Statusbar();
@@ -102,8 +102,8 @@ namespace LBH.SerialPortTools
 
             layout.PackStart(mainBox, false, false, 0);
             layout.PackEnd(statusbar, false, false, 0);
-            this.BuildLayout();
-            this.ShowAll();
+            BuildLayout();
+            ShowAll();
         }
         private void BuildLayout()
         {
@@ -111,17 +111,17 @@ namespace LBH.SerialPortTools
             VBox leftBox = new VBox();
             leftBox.Margin = 5;
             leftBox.SetSizeRequest(200, 400);
-            this.mainBox.Add(leftBox);
+            mainBox.Add(leftBox);
 
             VBox rightBox = new VBox();
             rightBox.SetSizeRequest(400, 600);
             rightBox.Margin = 5;
-            this.mainBox.Add(rightBox);
+            mainBox.Add(rightBox);
             #endregion
 
             #region 串口操作
             Frame frame1 = new Frame("<b>串口设置</b>");
-            ((Gtk.Label)frame1.LabelWidget).UseMarkup = true;
+            ((Label)frame1.LabelWidget).UseMarkup = true;
             leftBox.PackStart(frame1, true, true, 5);
 
             VBox vfram = new VBox();
@@ -208,7 +208,7 @@ namespace LBH.SerialPortTools
 
             #region 接受设置
             Frame frame2 = new Frame("<b>接收设置</b>");
-            ((Gtk.Label)frame2.LabelWidget).UseMarkup = true;
+            ((Label)frame2.LabelWidget).UseMarkup = true;
             leftBox.PackStart(frame2, true, true, 5);
 
             VBox f2vbox=new VBox();
@@ -236,7 +236,7 @@ namespace LBH.SerialPortTools
 
             #region 发送设置
             Frame frame3 = new Frame("<b>发送设置</b>");
-            ((Gtk.Label)frame3.LabelWidget).UseMarkup = true;
+            ((Label)frame3.LabelWidget).UseMarkup = true;
             leftBox.PackStart(frame3, true, true, 5);
 
             VBox f3vbox = new VBox();
@@ -268,7 +268,7 @@ namespace LBH.SerialPortTools
 
             #region 数据接收区            
             Frame frame4 = new Frame("<b>数据显示</b>");
-            ((Gtk.Label)frame4.LabelWidget).UseMarkup = true;
+            ((Label)frame4.LabelWidget).UseMarkup = true;
             rightBox.PackStart(frame4, true, true, 5);
             var scrollResult = new ScrolledWindow();
             scrollResult.SetSizeRequest(360, 500);
@@ -285,7 +285,7 @@ namespace LBH.SerialPortTools
 
             #region 数据发送区
             Frame frame5 = new Frame("<b>数据发送</b>");
-            ((Gtk.Label)frame5.LabelWidget).UseMarkup = true;
+            ((Label)frame5.LabelWidget).UseMarkup = true;
             rightBox.PackStart(frame5, true, true, 5);
 
             var scrollSend = new ScrolledWindow();
@@ -316,7 +316,7 @@ namespace LBH.SerialPortTools
         private void InitHistoryConfig()
         {
             var config = LoadCache();
-            FillCombo(config,comboCom, "com", SerialPort.GetPortNames());
+            FillCombo(config, comboCom, "com", SerialPort.GetPortNames());
             FillCombo(config, comboRate, "rate", Utils.baudRateList);
             FillCombo(config, comboStop, "stop", Utils.stopBitList);
             FillCombo(config, comboData, "data", Utils.dataBitList);
@@ -341,7 +341,7 @@ namespace LBH.SerialPortTools
         }
         private ComConfig LoadCache()
         {
-            ComConfig config = null;
+            ComConfig config = null!;
             if (File.Exists(cacheFile))
             {
                 try
@@ -351,7 +351,7 @@ namespace LBH.SerialPortTools
                         var bs = new byte[fileStream.Length];
                         fileStream.Read(bs, 0, bs.Length);
                         var tmp = Encoding.Default.GetString(bs);
-                        config = JsonSerializer.Deserialize<ComConfig>(tmp);
+                        config = JsonSerializer.Deserialize<ComConfig>(tmp)!;
                     }
                 }
                 catch (Exception)
@@ -359,15 +359,15 @@ namespace LBH.SerialPortTools
 
                 }
             }
-            return config;
+            return config!;
         }
-        private void FillCombo(ComConfig config, Gtk.ComboBox cb, string type, string[] ctextList)
+        private void FillCombo(ComConfig config, ComboBox cb, string type, string[] ctextList)
         {
             cb.Clear();
-            CellRendererText cell = new CellRendererText();
+            CellRendererText cell = new ();
             cb.PackStart(cell, false);
             cb.AddAttribute(cell, "text", 0);
-            ListStore store = new ListStore(typeof(string));
+            ListStore store = new (typeof(string));
             cb.Model = store;
 
             int index = 0;
@@ -511,7 +511,7 @@ namespace LBH.SerialPortTools
 
         private void BtnClear_Clicked(object? sender, EventArgs e)
         {
-            this.textResult.Buffer.Clear();
+            textResult.Buffer.Clear();
             recevieByteCount = 0;
             UpdateStatus();
         }
@@ -532,7 +532,7 @@ namespace LBH.SerialPortTools
                         btnSp.StyleContext.RemoveClass("btnRed");
                         btnSp.Image = Image.NewFromIconName("window-new", IconSize.Button);
                         img = new Gdk.Pixbuf("2.png", 30, 30);
-                        this.imgRender.Pixbuf = img;
+                        imgRender.Pixbuf = img;
                         //改为可用状态
                         ChangeComConfigStatus(true);
                     }
@@ -611,7 +611,7 @@ namespace LBH.SerialPortTools
                     btnSp.StyleContext.AddClass("btnRed");
                     btnSp.Image = Image.NewFromIconName("window-close", IconSize.Button);
                     img = new Gdk.Pixbuf("1.png", 30, 30);
-                    this.imgRender.Pixbuf = img;
+                    imgRender.Pixbuf = img;
                     ChangeComConfigStatus(false);
                 }
                 catch (Exception ex)
@@ -637,20 +637,20 @@ namespace LBH.SerialPortTools
         {
             SerialPort sp = (SerialPort)sender;
             string indata = sp.ReadExisting();
-            receiveThread = new Thread(new ParameterizedThreadStart(displayReceiveData));
+            receiveThread = new Thread(new ParameterizedThreadStart(displayReceiveData!));
             receiveThread.Start(indata);
         }
 
-        private void displayReceiveData(object? obj)
+        private void displayReceiveData(object obj)
         {
             if (ck16.Active)
             {
-                AppendText(textResult, Utils.convertToHexString((string)obj));
+                AppendText(textResult, Utils.convertToHexString((string) obj!));
                 recevieByteCount = (textResult.Buffer.Text.Length + 1) / 3;
             }
             else
             {
-                AppendText(textResult, (string)obj);
+                AppendText(textResult, (string) obj!);
                 recevieByteCount = textResult.Buffer.Text.Length;
             }
             UpdateStatus();
