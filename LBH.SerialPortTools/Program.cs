@@ -4,7 +4,7 @@ using LBH.SerialPortTools;
 class Program
 {
     public static Application App;
-    public static MainWindow mainWindow;
+    public static MainWindow2 mainWindow;
     [STAThread]
     public static void Main(string[] args)
     {
@@ -17,7 +17,7 @@ class Program
         provider.LoadFromPath("sp.css");
         StyleContext.AddProviderForScreen(Gdk.Screen.Default, provider, 800);
 
-        mainWindow = new MainWindow();
+        mainWindow = new MainWindow2();
         mainWindow.SetIconFromFile("logo.png");
         App.AddWindow(mainWindow);
         
